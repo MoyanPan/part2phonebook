@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useState,useEffect} from 'react'
 const Name = (props) =>{
   return(
     <div>
@@ -9,7 +10,6 @@ const Name = (props) =>{
   )
 }
 const Filter = (props) => {
-  console.log("HI Im Filter")
   return (
     <form>
     <div>
@@ -36,15 +36,8 @@ const Person = (props) => {
     <div>{props.personstoshow.map(person => <Name key = {person.name} name = {person.name} phone = {person.phone}/>)}</div>
   )
 }
-
-
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [phone,setPhone] = useState('')
   const [filter, setFilter] = useState('')
@@ -62,7 +55,6 @@ const App = () => {
       setPersons(persons.concat(newperson))
       setNewName("")
       setPhone("")
-      console.log(event.target)
     }
   }
    const handleNameChange = (event) =>{
@@ -77,6 +69,13 @@ const App = () => {
   const handleFilterChange = (event) =>{
     setFilter(event.target.value)
   }
+  const hook = () =>{
+    axios.get("http://localhost:3001/persons")
+    .then(response => {
+      setPersons(response.data)
+    })
+  }
+  useEffect(hook,[])
   return (
     <div>
       <h2>Phonebook</h2>
