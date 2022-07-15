@@ -79,8 +79,9 @@ const App = () => {
   const handleFilterChange = (event) =>{
     setFilter(event.target.value)
   }
+  const baseurl = "http://localhost:3001/persons"
   const hook = () =>{
-    axios.get("http://localhost:3001/persons")
+    axios.get(baseurl)
     .then(response => {
       setPersons(response.data)
     })
